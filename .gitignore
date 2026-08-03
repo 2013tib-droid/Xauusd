@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Data pasar tidak ikut di-commit: ukurannya besar dan lisensinya milik broker.
+data/*.csv
+data/*.tsv
+!data/.gitkeep
+
+# Hasil backtest
+*.out.csv
+hasil*.csv

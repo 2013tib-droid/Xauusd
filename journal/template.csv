@@ -1,0 +1,4 @@
+tanggal,waktu_wib,sesi,strategi,arah,bias_h4,bias_h1,entry,sl,tp,lot,risiko_usd,hasil_r,checklist_lolos,alasan_exit,screenshot,catatan_emosi
+2026-08-04,14:45,london,trend,buy,bullish,bullish,4068.20,4058.90,4082.10,0.01,9.30,1.5,Y,tp,,tenang - ikuti plan
+2026-08-04,20:15,ny,breakout,sell,bearish,bearish,4055.40,4064.10,4042.30,0.01,8.70,-1.0,Y,sl,,loss wajar - setup benar
+2026-08-05,15:30,london,smc,buy,bullish,bearish,4061.00,4053.50,4076.00,0.02,15.00,0.8,N,time_stop,,MELANGGAR: H4/H1 tidak searah tapi tetap masuk
