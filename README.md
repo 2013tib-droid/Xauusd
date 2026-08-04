@@ -14,6 +14,7 @@ Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 | [docs/MACRO_FED_WARSH.md](docs/MACRO_FED_WARSH.md) | Konteks makro era Fed Warsh: forward guidance dipangkas, real yield naik, dan kenapa disiplin blackout berita jadi mengikat |
 | [docs/DATA.md](docs/DATA.md) | Cara export data M15 dari MT5, dan jebakan zona waktu server |
 | [journal/template.csv](journal/template.csv) | Template jurnal trading |
+| [news/](news/) | Brief makro bertanggal, dihasilkan agen `gold-news` (lihat bawah) |
 | `xauusd/` | Backtester |
 | `tests/` | 19 uji yang mengunci matematika sizing dan asumsi eksekusi engine |
 
@@ -89,6 +90,23 @@ Jangan lompati satu pun (TRADING_PLAN §8):
 4. Baru naik ke risiko penuh
 
 Backtester mencetak verdikt LOLOS/BELUM LOLOS untuk kriteria tahap 1 secara otomatis.
+
+## Agen pengumpul berita
+
+`.claude/agents/gold-news.md` mendefinisikan subagent **`gold-news`** untuk Claude Code.
+Tugasnya mengumpulkan perkembangan yang menggerakkan emas — kebijakan Fed dan real yield,
+rilis data US, pembelian bank sentral, aliran ETF, dolar, geopolitik — lalu menuliskannya
+sebagai brief bertanggal di `news/`.
+
+```
+> pakai agen gold-news untuk update berita gold minggu ini
+> gold-news: fokus ke real yield dan pembelian bank sentral 30 hari terakhir
+```
+
+Agen ini membaca konteks yang sudah ada (`docs/MACRO_FED_WARSH.md`, TRADING_PLAN §1 & §7)
+lebih dulu, jadi yang dilaporkan adalah **apa yang berubah** — bukan pengulangan.
+Ia wajib menyertakan URL sumber, dilarang mengarang angka (sel kosong ditulis
+"tidak ditemukan"), dan **tidak memberi sinyal trading.** Rulebook tetap yang memutuskan.
 
 ---
 
