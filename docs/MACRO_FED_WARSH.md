@@ -1,11 +1,13 @@
 # Catatan makro: era Fed Warsh & dampaknya ke XAUUSD
 
-Dokumen ini menjelaskan **kenapa** aturan blackout berita (TRADING_PLAN §7) dan
-larangan breakout tanpa konfirmasi (§5.A) diperketat di regime sekarang.
-Ia bukan sinyal trading. Ia adalah konteks yang menentukan strategi mana yang
-layak dipakai bulan ini.
+> **Status: catatan referensi, bertanggal 4 Agustus 2026.**
+> Ini rangkuman dari satu berita, disimpan sebagai bahan bacaan latar — **bukan patokan
+> dan bukan aturan.** Yang mengikat cuma `TRADING_PLAN.md`. Isinya bisa basi kapan saja;
+> kalau brief di `news/` menemukan yang bertentangan, **brief yang lebih baru yang menang.**
 
-Review ulang **setiap awal bulan**, bersama §1 trading plan.
+Dokumen ini menjelaskan **kenapa** aturan blackout berita (TRADING_PLAN §7) dan
+larangan breakout tanpa konfirmasi (§5.A) diperketat saat catatan ini dibuat.
+Ia bukan sinyal trading.
 
 ---
 

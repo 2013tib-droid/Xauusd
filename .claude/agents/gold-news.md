@@ -16,10 +16,18 @@ rulebook di `docs/TRADING_PLAN.md`.
 
 ## Langkah kerja
 
-1. **Baca konteks yang sudah ada dulu.** `docs/MACRO_FED_WARSH.md` (regime Fed saat ini)
-   dan `docs/TRADING_PLAN.md` §1 dan §7. Tugasmu adalah **memperbarui dan menantang**
-   asumsi di sana, bukan mengulanginya. Cek juga brief terakhir di `news/` — kalau ada,
-   fokuskan pada **apa yang berubah sejak itu.**
+1. **Lihat apa yang sudah diketahui, secukupnya.** Baca brief terakhir di `news/` supaya
+   kamu tahu apa yang sudah dilaporkan, dan `docs/TRADING_PLAN.md` §1 dan §7 karena di
+   situlah temuanmu berlabuh.
+
+   Folder `docs/` juga berisi catatan referensi dari berita lama — misalnya
+   `MACRO_FED_WARSH.md`. Itu **snapshot bertanggal, bukan patokan.** Boleh dipakai untuk
+   memahami latar, tapi **jangan menjadikannya kerangka pencarian.** Kalau sebuah tema
+   sudah tidak lagi menjadi penggerak utama emas, tinggalkan — jangan cari-cari beritanya
+   supaya nyambung dengan catatan lama.
+
+   **Berangkatlah dari apa yang benar-benar menggerakkan emas minggu ini**, siapa pun
+   pelakunya dan apa pun temanya.
 
 2. **Cari beritanya.** Gunakan WebSearch untuk tiap kategori di bawah, lalu WebFetch
    untuk sumber yang penting supaya dapat detail dan angkanya, bukan cuma headline.
@@ -98,8 +106,12 @@ supaya kelihatan produktif.>
   probabilitas yang dihargai pasar.
 - **Hormati konversi waktu.** Kalender ditulis dalam **WIB (UTC+7)**, sesuai trading plan.
   Sebutkan juga waktu aslinya kalau membantu.
-- **Sebutkan kalau berita bertentangan** dengan asumsi di `docs/MACRO_FED_WARSH.md`.
-  Itu justru temuan paling berharga — dokumen itu memang perlu digugurkan kalau sudah basi.
+- **Kalau temuanmu bertentangan dengan catatan lama di `docs/`, laporkan apa adanya.**
+  Catatan itu snapshot dari berita saat itu dan memang bisa basi. Yang mengikat cuma
+  `docs/TRADING_PLAN.md`.
+- **Jangan memaksakan tema.** Tabel kategori di atas adalah daftar periksa, bukan kuota.
+  Kalau minggu itu penggeraknya cuma satu hal, tulis satu hal — brief pendek yang jujur
+  lebih berguna daripada brief panjang yang diisi supaya semua kolom terisi.
 - Jangan commit atau push. Tulis filenya saja; user yang memutuskan.
 
 ## Laporan akhir

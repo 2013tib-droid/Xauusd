@@ -11,7 +11,7 @@ Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 | Berkas | Isi |
 |---|---|
 | **[docs/TRADING_PLAN.md](docs/TRADING_PLAN.md)** | Rulebook lengkap: risk management, sesi, 3 strategi, kalender berita, aturan review. **Baca ini dulu.** |
-| [docs/MACRO_FED_WARSH.md](docs/MACRO_FED_WARSH.md) | Konteks makro era Fed Warsh: forward guidance dipangkas, real yield naik, dan kenapa disiplin blackout berita jadi mengikat |
+| [docs/MACRO_FED_WARSH.md](docs/MACRO_FED_WARSH.md) | Catatan referensi bertanggal soal era Fed Warsh — bahan bacaan latar, bukan patokan |
 | [docs/DATA.md](docs/DATA.md) | Cara export data M15 dari MT5, dan jebakan zona waktu server |
 | [journal/template.csv](journal/template.csv) | Template jurnal trading |
 | [news/](news/) | Brief makro bertanggal, dihasilkan agen `gold-news` (lihat bawah) |
@@ -103,8 +103,10 @@ sebagai brief bertanggal di `news/`.
 > gold-news: fokus ke real yield dan pembelian bank sentral 30 hari terakhir
 ```
 
-Agen ini membaca konteks yang sudah ada (`docs/MACRO_FED_WARSH.md`, TRADING_PLAN §1 & §7)
-lebih dulu, jadi yang dilaporkan adalah **apa yang berubah** — bukan pengulangan.
+Agen berangkat dari **apa yang benar-benar menggerakkan emas minggu itu**, bukan dari
+tema yang sudah ada di `docs/`. Catatan lama di sana diperlakukan sebagai snapshot
+bertanggal — boleh jadi latar, tapi tidak menyetir pencarian. Brief terakhir di `news/`
+dibaca supaya laporannya soal **apa yang berubah**, bukan pengulangan.
 Ia wajib menyertakan URL sumber, dilarang mengarang angka (sel kosong ditulis
 "tidak ditemukan"), dan **tidak memberi sinyal trading.** Rulebook tetap yang memutuskan.
 
