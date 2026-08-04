@@ -12,3 +12,8 @@ data/*.tsv
 # Hasil backtest
 *.out.csv
 hasil*.csv
+
+# Hasil briefing — dibuat ulang tiap kali, tidak perlu disimpan
+briefing*.html
+briefing*.json
+data/news.json
