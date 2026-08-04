@@ -11,6 +11,7 @@ Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 | Berkas | Isi |
 |---|---|
 | **[docs/TRADING_PLAN.md](docs/TRADING_PLAN.md)** | Rulebook lengkap: risk management, sesi, 3 strategi, kalender berita, aturan review. **Baca ini dulu.** |
+| [docs/MACRO_FED_WARSH.md](docs/MACRO_FED_WARSH.md) | Konteks makro era Fed Warsh: forward guidance dipangkas, real yield naik, dan kenapa disiplin blackout berita jadi mengikat |
 | [docs/DATA.md](docs/DATA.md) | Cara export data M15 dari MT5, dan jebakan zona waktu server |
 | [journal/template.csv](journal/template.csv) | Template jurnal trading |
 | `xauusd/` | Backtester |

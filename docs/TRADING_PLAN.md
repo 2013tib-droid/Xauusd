@@ -32,15 +32,21 @@ Ini bukan hiasan — konteks menentukan strategi mana yang aku prioritaskan.
 
 - Gold ~**$4.070**, turun ~28% dari rekor Januari 2026 ($5.598), tapi masih +21% YoY.
 - **6 minggu konsolidasi menyempit** di area low tahunan. Range sempit = fakeout sering.
-- Fed diperkirakan *hold* di 3,50–3,75%. Ketua Fed Warsh memangkas forward guidance
-  → **pasar hiper-reaktif terhadap data**. Spike volatilitas lebih sering dan lebih liar.
+- Fed *hold* di 3,50–3,75% — tapi dengan **3 dissent** (Hammack, Kashkari, Logan)
+  yang minta naik 25 bps. Keputusan berikutnya benar-benar terbuka.
+- Ketua Fed Warsh memangkas forward guidance secara **sengaja** → **pasar hiper-reaktif
+  terhadap data**. Yield nominal dan riil naik tajam; emas kena beban jangka pendek dan
+  reaksinya kini padat di menit-menit pertama tiap rilis.
+  Detail lengkap: **[MACRO_FED_WARSH.md](MACRO_FED_WARSH.md)**.
 - Bank sentral masih akumulasi; ETF outflow berat. Dua gaya ini saling mengunci → range.
 
 **Implikasi operasional:**
 1. Dalam regime range-bound seperti ini, **Strategi A (breakout) punya rasio fakeout tertinggi.**
    Karena itu breakout wajib pakai filter konfirmasi (§5.A) — tanpa itu, jangan dipakai.
 2. Volatilitas event-driven tinggi → **disiplin blackout berita (§7) bukan opsional.**
-3. Begitu range 6 minggu ini pecah dengan volume, prioritas bergeser ke Strategi B (trend following).
+3. Pidato Ketua Fed diperlakukan **setara rilis data**, bukan event kelas bawah — tanpa
+   guidance, tiap kalimatnya adalah informasi baru.
+4. Begitu range 6 minggu ini pecah dengan volume, prioritas bergeser ke Strategi B (trend following).
 
 Regime ini harus **direview ulang tiap awal bulan.** Plan yang tidak di-review adalah plan basi.
 
@@ -258,7 +264,7 @@ Event yang wajib dihormati, urut dampaknya ke gold:
 | **FOMC rate decision + SEP** | **$30–80** | Blackout diperpanjang: 30 menit sebelum, 60 menit sesudah |
 | **US CPI (Core CPI m/m)** | $15–50 | Deviasi ±0,1% saja = gold gerak $20–40 |
 | **Non-Farm Payrolls** | $15–50 | Sering ada spike dua arah dalam 5 menit pertama |
-| Pidato Ketua Fed (Warsh) | $10–40 | Lebih tidak terduga sejak forward guidance dikurangi |
+| **Pidato Ketua Fed (Warsh)** | $10–40 | **Diperlakukan high-impact.** Tanpa forward guidance, tiap kalimat = informasi baru ([MACRO_FED_WARSH.md](MACRO_FED_WARSH.md)) |
 | PPI, Retail Sales, PCE | $10–25 | |
 | Jobless Claims (mingguan) | $5–15 | Boleh tetap trading, tapi ketatkan SL |
 
