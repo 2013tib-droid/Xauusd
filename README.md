@@ -19,6 +19,21 @@ Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 | `xauusd/` | Backtester + briefing |
 | `tests/` | 55 uji yang mengunci matematika sizing, asumsi eksekusi engine, dan aturan briefing |
 
+## Mulai cepat
+
+**Lewat Claude Code** (paling praktis) — buka sesi di folder repo ini, lalu ketik:
+
+| Ketik | Yang terjadi |
+|---|---|
+| `/brief` | Claude tanya CSV + angka DXY/yield, carikan berita & kalender, lalu tampilkan halaman briefing |
+| "backtest semua strategi" | Claude jalankan backtester dan bacakan verdikt LOLOS/BELUM LOLOS |
+
+Siapkan sebelum `/brief`: **CSV M15 terbaru** dari MT5 (`Tools → Quotes/Bars`, taruh di
+`data/`), **zona waktu server broker** (mis. `Etc/GMT-3`), dan **angka DXY + US10Y +
+US20Y** dari TradingView (harga terakhir dan perubahan harian %).
+
+**Lewat terminal** — perintah lengkapnya ada di dua bagian di bawah.
+
 ## Dua alat, dua pertanyaan berbeda
 
 | | Pertanyaan yang dijawab | Perintah |
