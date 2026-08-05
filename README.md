@@ -34,6 +34,8 @@ uji paritas: 529 trade dari 9 kombinasi strategi × konfigurasi harus cocok
 | **[docs/TRADING_PLAN.md](docs/TRADING_PLAN.md)** | Rulebook lengkap: risk management, sesi, 3 strategi, kalender berita, aturan review. **Baca ini dulu.** |
 | [docs/BRIEFING.md](docs/BRIEFING.md) | Briefing pra-entry: cara pakai, skor makro, format berkas berita |
 | [docs/DATA.md](docs/DATA.md) | Cara export data M15 dari MT5, dan jebakan zona waktu server |
+| [docs/MACRO_FED_WARSH.md](docs/MACRO_FED_WARSH.md) | Catatan latar era Fed Warsh — snapshot bertanggal, bukan patokan |
+| `news/` | Brief makro mingguan hasil agen `gold-news` |
 | [journal/template.csv](journal/template.csv) | Template jurnal trading |
 | `xauusd/` | Backtester + briefing (Python, CLI) |
 | `web/` | Backtester yang sama diport ke JavaScript, plus situsnya |
@@ -48,6 +50,11 @@ uji paritas: 529 trade dari 9 kombinasi strategi × konfigurasi harus cocok
 |---|---|
 | `/brief` | Claude tanya CSV + angka DXY/yield, carikan berita & kalender, lalu tampilkan halaman briefing |
 | "backtest semua strategi" | Claude jalankan backtester dan bacakan verdikt LOLOS/BELUM LOLOS |
+| "pakai agen gold-news untuk update berita gold minggu ini" | Riset makro mendalam, hasilnya ditulis ke `news/` |
+
+Dua yang pertama untuk dipakai sebelum entry; yang ketiga riset mingguan, jalankan
+terpisah. `/brief` sengaja tidak memanggil agen itu — briefing yang menunggu riset
+makro selesai kehilangan gunanya, karena bar M15 berikutnya tidak menunggu.
 
 Siapkan sebelum `/brief`: **CSV M15 terbaru** dari MT5 (`Tools → Quotes/Bars`, taruh di
 `data/`), **zona waktu server broker** (mis. `Etc/GMT-3`), dan **angka DXY + US10Y +

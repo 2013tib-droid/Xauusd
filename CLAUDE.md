@@ -41,6 +41,19 @@ node web/tests/parity.mjs     # hasil JS harus sama persis dengan hasil Python
 Untuk briefing, ikuti skill `/brief` (`.claude/skills/brief/SKILL.md`) — di situ ada
 prosedur lengkapnya termasuk cara mencari berita dan membangun `news.json`.
 
+## Berita: dua alat, jangan dicampur
+
+- **`/brief`** — pra-entry, hitungan menit. Judul berita + kalender blackout, langsung
+  jadi halaman HTML. Dipakai tiap kali mau entry.
+- **Agen `gold-news`** (`.claude/agents/gold-news.md`) — riset mingguan yang mendalam:
+  real yield, aliran ETF, pembelian bank sentral. Hasilnya `news/YYYY-MM-DD-gold.md`.
+  Panggil terpisah, **jangan dari dalam `/brief`** — briefing yang menunggu riset makro
+  selesai kehilangan gunanya.
+
+Catatan di `docs/` seperti `MACRO_FED_WARSH.md` adalah **snapshot bertanggal, bukan
+patokan**. Kalau brief di `news/` bertentangan dengannya, brief yang lebih baru menang.
+Jangan menjadikan catatan lama sebagai kerangka pencarian berita.
+
 ## Yang harus dijaga saat mengubah kode
 
 - **Tidak ada lookahead.** Sinyal dikonfirmasi di close bar, dieksekusi di open bar
