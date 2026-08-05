@@ -1,8 +1,10 @@
-# XAUUSD M15 — Trading Plan & Backtester
+# XAUUSD M15 — Trading Plan, Backtester & Briefing
 
-Perangkat kerja untuk trading gold di timeframe 15 menit: sebuah **rulebook yang mengikat**
-dan sebuah **backtester** untuk membuktikan (atau menggugurkan) aturan-aturan itu sebelum
-uang sungguhan dipertaruhkan.
+Perangkat kerja untuk trading gold di timeframe 15 menit: sebuah **rulebook yang mengikat**,
+sebuah **backtester** untuk membuktikan (atau menggugurkan) aturan-aturan itu sebelum uang
+sungguhan dipertaruhkan, dan sebuah **briefing pra-entry** untuk memeriksa kondisi sekarang.
+
+Tidak ada bot di sini. Tidak ada yang terhubung ke broker; eksekusi tetap di tanganmu.
 
 Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 
@@ -11,10 +13,37 @@ Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 | Berkas | Isi |
 |---|---|
 | **[docs/TRADING_PLAN.md](docs/TRADING_PLAN.md)** | Rulebook lengkap: risk management, sesi, 3 strategi, kalender berita, aturan review. **Baca ini dulu.** |
+| [docs/BRIEFING.md](docs/BRIEFING.md) | Briefing pra-entry: cara pakai, skor makro, format berkas berita |
 | [docs/DATA.md](docs/DATA.md) | Cara export data M15 dari MT5, dan jebakan zona waktu server |
 | [journal/template.csv](journal/template.csv) | Template jurnal trading |
-| `xauusd/` | Backtester |
-| `tests/` | 19 uji yang mengunci matematika sizing dan asumsi eksekusi engine |
+| `xauusd/` | Backtester + briefing |
+| `tests/` | 55 uji yang mengunci matematika sizing, asumsi eksekusi engine, dan aturan briefing |
+
+## Mulai cepat
+
+**Lewat Claude Code** (paling praktis) — buka sesi di folder repo ini, lalu ketik:
+
+| Ketik | Yang terjadi |
+|---|---|
+| `/brief` | Claude tanya CSV + angka DXY/yield, carikan berita & kalender, lalu tampilkan halaman briefing |
+| "backtest semua strategi" | Claude jalankan backtester dan bacakan verdikt LOLOS/BELUM LOLOS |
+
+Siapkan sebelum `/brief`: **CSV M15 terbaru** dari MT5 (`Tools → Quotes/Bars`, taruh di
+`data/`), **zona waktu server broker** (mis. `Etc/GMT-3`), dan **angka DXY + US10Y +
+US20Y** dari TradingView (harga terakhir dan perubahan harian %).
+
+**Lewat terminal** — perintah lengkapnya ada di dua bagian di bawah.
+
+## Dua alat, dua pertanyaan berbeda
+
+| | Pertanyaan yang dijawab | Perintah |
+|---|---|---|
+| **Backtester** | "Strategi ini layak dipakai?" | `python3 -m xauusd.run` |
+| **Briefing** | "Sekarang ada setup yang sah?" | `python3 -m xauusd.now` |
+
+Urutannya tidak boleh dibalik: sebuah strategi harus lolos backtest **dulu** sebelum
+briefing-nya berarti apa-apa. Briefing yang menampilkan setup dari strategi yang belum
+terbukti hanya membuat tebakan terlihat rapi.
 
 ## Mulai
 
@@ -36,6 +65,29 @@ python3 -m pytest tests/ -q
 
 Opsi lain: `--equity`, `--risk`, `--spread`, `--commission`, `--min-lot`,
 `--undersized {skip,min}`, `--no-partial`, `--no-trail`. Lihat `--help`.
+
+## Briefing sebelum entry
+
+```bash
+python3 -m xauusd.now \
+    --data data/XAUUSD_M15.csv --source-tz Etc/GMT-3 \
+    --macro DXY=99.30:-0.25 --macro US10Y=4.12:1.8 --macro US20Y=4.61:1.4 \
+    --news data/news.json --out briefing.html --open
+```
+
+Keluar satu halaman HTML: verdikt di atas (ada setup / tidak ada / blackout), lalu
+bias H4-H1, level kunci, ukuran lot, konteks makro, dan judul berita terkini.
+
+Angka DXY dan yield diisi manual dari TradingView — alasannya di
+[docs/BRIEFING.md](docs/BRIEFING.md). Skrip ini tidak mengambil data sendiri dari internet.
+
+Cara paling praktis: buka sesi Claude Code di repo ini dan ketik **`/brief`**. Skill-nya
+akan menanyakan yang perlu, mencarikan berita dan kalender terkini, menjalankan perintah
+di atas, lalu menampilkan halamannya.
+
+Yang perlu dipegang: briefing memotret kondisi pada bar M15 yang **sudah close** —
+bar yang sedang berjalan dibuang. Ia tidak meramal, dan tidak menggantikan checklist
+di TRADING_PLAN §5.
 
 ## Tiga strategi
 
