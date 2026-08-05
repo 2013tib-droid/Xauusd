@@ -8,6 +8,11 @@ Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 
 ## → [Buka versi web](https://2013tib-droid.github.io/Xauusd/)
 
+> **Sekali saja sebelum situsnya terbit:** buka Settings → Pages, lalu set
+> **Source: GitHub Actions**. Token Actions tidak punya izin menyalakan Pages
+> sendiri, jadi langkah ini harus dilakukan manual. Setelah itu setiap push ke
+> `main` mendeploy situsnya otomatis.
+
 Backtester yang sama, jalan sepenuhnya di browser: taruh CSV M15 dari MT5, pilih
 zona waktu server broker, dan ketiga strategi langsung dijalankan — lengkap dengan
 kurva equity, bedah performa per sesi, daftar trade, dan verdikt LOLOS/BELUM LOLOS.

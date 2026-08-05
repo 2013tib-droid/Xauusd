@@ -57,8 +57,13 @@ jobs:
   # Job build sengaja terpisah dari deploy: environment github-pages dibatasi ke
   # branch default dan aturannya diperiksa sebelum job jalan, jadi kalau digabung,
   # run dari branch fitur langsung gagal tanpa log.
+  #
+  # Dilewati pada pull request: artefak Pages tidak bisa dideploy dari PR, jadi
+  # membangunnya di sana hanya menambah run merah tanpa memberi informasi apa pun.
+  # Uji tetap jalan untuk setiap PR.
   build:
     needs: uji
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -66,9 +71,12 @@ jobs:
       - name: Susun situs
         run: bash web/build.sh
 
+      # Tanpa `enablement: true`: GITHUB_TOKEN tidak punya izin membuat situs
+      # Pages, jadi opsi itu hanya menghasilkan "Resource not accessible by
+      # integration". Pages perlu dinyalakan sekali secara manual di
+      # Settings → Pages → Source: GitHub Actions. Setelah itu langkah ini jalan
+      # sendiri selamanya.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
