@@ -2,8 +2,7 @@ name: Situs & Uji
 
 on:
   push:
-    # branch default repo saat ini + 'main' untuk jaga-jaga bila kelak di-rename
-    branches: [claude/xauusd-15min-trading-rx8mrl, main]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -82,6 +81,11 @@ jobs:
         with:
           path: _site
 
+  # Kalau job ini merah tanpa satu pun langkah yang jalan (tidak ada runner, tidak
+  # ada log), penyebabnya bukan kode: environment github-pages punya daftar branch
+  # yang boleh mendeploy, dan daftar itu dibekukan saat Pages pertama dinyalakan.
+  # Mengganti branch default kemudian tidak memperbaruinya. Perbaikannya sekali di
+  # Settings → Environments → github-pages → Deployment branches.
   deploy:
     needs: build
     if: github.ref_name == github.event.repository.default_branch
