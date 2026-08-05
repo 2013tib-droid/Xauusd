@@ -6,6 +6,20 @@ uang sungguhan dipertaruhkan.
 
 Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 
+## → [Buka versi web](https://2013tib-droid.github.io/Xauusd/)
+
+Backtester yang sama, jalan sepenuhnya di browser: taruh CSV M15 dari MT5, pilih
+zona waktu server broker, dan ketiga strategi langsung dijalankan — lengkap dengan
+kurva equity, bedah performa per sesi, daftar trade, dan verdikt LOLOS/BELUM LOLOS.
+Trading plan-nya juga bisa dibaca di sana.
+
+**Datamu tidak diunggah ke mana pun.** Halaman itu tidak punya server; berkas CSV
+dibaca dan dihitung di dalam browsermu sendiri.
+
+Versi web dan CLI Python memakai satu perhitungan yang sama, dan itu dikunci oleh
+uji paritas: 529 trade dari 9 kombinasi strategi × konfigurasi harus cocok
+**field per field** antara kedua implementasi, atau CI menolak deploy.
+
 ## Isi
 
 | Berkas | Isi |
@@ -13,8 +27,10 @@ Disusun untuk akun kecil (< $1.000), risiko 1% per trade, sesi Asia/London/NY.
 | **[docs/TRADING_PLAN.md](docs/TRADING_PLAN.md)** | Rulebook lengkap: risk management, sesi, 3 strategi, kalender berita, aturan review. **Baca ini dulu.** |
 | [docs/DATA.md](docs/DATA.md) | Cara export data M15 dari MT5, dan jebakan zona waktu server |
 | [journal/template.csv](journal/template.csv) | Template jurnal trading |
-| `xauusd/` | Backtester |
+| `xauusd/` | Backtester (Python, CLI) |
+| `web/` | Backtester yang sama diport ke JavaScript, plus situsnya |
 | `tests/` | 19 uji yang mengunci matematika sizing dan asumsi eksekusi engine |
+| `web/tests/` | Uji paritas JavaScript ↔ Python |
 
 ## Mulai
 
@@ -36,6 +52,27 @@ python3 -m pytest tests/ -q
 
 Opsi lain: `--equity`, `--risk`, `--spread`, `--commission`, `--min-lot`,
 `--undersized {skip,min}`, `--no-partial`, `--no-trail`. Lihat `--help`.
+
+### Menjalankan versi web secara lokal
+
+```bash
+bash web/build.sh
+python3 -m http.server -d _site 8000   # lalu buka http://localhost:8000
+```
+
+Harus lewat HTTP, bukan `file://` — halamannya memakai modul ES dan `fetch()`
+untuk memuat trading plan.
+
+### Menjaga web dan CLI tetap sama
+
+```bash
+node web/tests/parity.mjs           # bandingkan hasil JS dengan hasil Python
+python3 web/tests/make_fixture.py   # bangkitkan ulang fixture setelah engine Python berubah
+```
+
+Kalau kamu mengubah apa pun di `xauusd/`, jalankan `make_fixture.py` lalu commit
+hasilnya. CI menolak fixture yang kedaluwarsa, karena tanpa itu web bisa diam-diam
+bercerita beda tentang strategi yang sama.
 
 ## Tiga strategi
 

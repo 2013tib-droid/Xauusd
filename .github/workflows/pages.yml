@@ -1,0 +1,87 @@
+name: Situs & Uji
+
+on:
+  push:
+    # branch default repo saat ini + 'main' untuk jaga-jaga bila kelak di-rename
+    branches: [claude/xauusd-15min-trading-rx8mrl, main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # Satu-satunya hal yang membuat versi web boleh dipercaya: angkanya harus
+  # sama dengan engine Python. Kalau uji paritas merah, situs tidak dideploy.
+  uji:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependensi
+        run: pip install -r requirements.txt
+
+      - name: Uji engine Python
+        run: python -m pytest tests/ -q
+
+      - name: Uji paritas JavaScript ↔ Python
+        run: node web/tests/parity.mjs
+
+      # Fixture dibangkitkan ulang lalu dibandingkan: kalau engine Python berubah
+      # tapi fixture-nya lupa diperbarui, uji paritas di atas akan lolos padahal
+      # web dan CLI sudah berbeda. Langkah ini yang menutup celah itu.
+      - name: Pastikan fixture paritas masih mutakhir
+        run: |
+          python3 web/tests/make_fixture.py
+          if ! git diff --quiet -- web/tests/; then
+            echo "::error::Fixture paritas kedaluwarsa. Jalankan 'python3 web/tests/make_fixture.py' lalu commit hasilnya."
+            git diff --stat -- web/tests/
+            exit 1
+          fi
+
+  # Job build sengaja terpisah dari deploy: environment github-pages dibatasi ke
+  # branch default dan aturannya diperiksa sebelum job jalan, jadi kalau digabung,
+  # run dari branch fitur langsung gagal tanpa log.
+  build:
+    needs: uji
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Susun situs
+        run: bash web/build.sh
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy ke GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

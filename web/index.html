@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XAUUSD M15 — Trading Plan &amp; Backtester</title>
+<meta name="description" content="Backtester XAUUSD M15 yang jalan sepenuhnya di browser, plus rulebook lengkapnya.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪙</text></svg>">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>XAUUSD M15 — Trading Plan &amp; Backtester</h1>
+  <p>Rulebook yang mengikat, dan alat untuk membuktikan (atau menggugurkan) aturannya sebelum uang sungguhan dipertaruhkan.</p>
+</header>
+
+<nav class="nav">
+  <button data-panel="backtest">Backtest</button>
+  <button data-panel="rencana">Trading plan</button>
+  <button data-panel="data">Data &amp; batasan</button>
+</nav>
+
+<!-- ============================================================= BACKTEST -->
+<section class="panel" id="panel-backtest">
+
+  <div class="card">
+    <h2>1. Data M15</h2>
+    <p class="hint">
+      Export dari MetaTrader 5 dalam format CSV. Semua perhitungan terjadi di
+      browsermu — berkasnya tidak diunggah ke mana pun.
+    </p>
+
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Pilih berkas CSV">
+      <strong>Taruh berkas CSV di sini</strong>
+      <span>atau klik untuk memilih · kolom yang dibutuhkan: DATE, TIME, OPEN, HIGH, LOW, CLOSE</span>
+      <input type="file" id="file" accept=".csv,.tsv,.txt,text/csv">
+    </div>
+
+    <div class="grid" style="margin-top:14px">
+      <div class="field">
+        <label for="sourceTz">Zona waktu stempel di berkas</label>
+        <select id="sourceTz">
+          <option value="0">UTC (+0)</option>
+          <option value="2">UTC+2 — server MT5 musim dingin</option>
+          <option value="3" selected>UTC+3 — server MT5 musim panas (paling umum)</option>
+          <option value="1">UTC+1</option>
+          <option value="7">UTC+7 — WIB</option>
+          <option value="-4">UTC−4</option>
+          <option value="-5">UTC−5</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="note info" style="margin-top:10px">
+      Salah mengisi zona waktu akan menggeser <strong>seluruh</strong> filter sesi dan
+      membuat hasilnya menyesatkan tanpa terlihat salah. Cek jam server brokermu dulu —
+      caranya ada di tab <strong>Data &amp; batasan</strong>.
+    </div>
+
+    <div class="actions">
+      <button class="ghost" id="useSynthetic">Coba dengan data sintetis</button>
+    </div>
+
+    <div class="note warn" id="syntheticWarning" hidden>
+      <strong>Ini data sintetis.</strong> Hasil di bawah hanya membuktikan engine berjalan;
+      tidak ada nilai prediktif sama sekali. Ganti dengan data brokermu sebelum mengambil
+      keputusan trading apa pun.
+    </div>
+
+    <div class="note bad" id="dataerror" hidden></div>
+    <div class="datainfo" id="datainfo"></div>
+  </div>
+
+  <div class="card">
+    <h2>2. Akun dan risiko</h2>
+    <p class="hint">Default-nya akun kecil: $1.000, risiko 1% per trade.</p>
+
+    <div class="grid">
+      <div class="field">
+        <label for="equity">Modal awal (USD)</label>
+        <input type="number" id="equity" value="1000" min="1" step="100">
+      </div>
+      <div class="field">
+        <label for="risk">Risiko per trade (%)</label>
+        <input type="number" id="risk" value="1" min="0.05" max="10" step="0.05">
+      </div>
+      <div class="field">
+        <label for="spread">Spread (USD)</label>
+        <input type="number" id="spread" value="0.25" min="0" step="0.05">
+      </div>
+      <div class="field">
+        <label for="commission">Komisi per lot (round-turn)</label>
+        <input type="number" id="commission" value="7" min="0" step="0.5">
+      </div>
+      <div class="field">
+        <label for="minLot">Lot minimum</label>
+        <input type="number" id="minLot" value="0.01" min="0.001" step="0.001">
+      </div>
+      <div class="field">
+        <label for="undersized">Kalau lot hasil hitungan &lt; lot minimum</label>
+        <select id="undersized">
+          <option value="skip">Lewati trade (jujur)</option>
+          <option value="min">Paksa lot minimum (risiko &gt; target)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checkrow">
+      <label><input type="checkbox" class="session-check" value="asia" checked> Sesi Asia</label>
+      <label><input type="checkbox" class="session-check" value="london" checked> Sesi London</label>
+      <label><input type="checkbox" class="session-check" value="ny" checked> Sesi New York</label>
+      <label><input type="checkbox" id="usePartial" checked> Partial close di +1R</label>
+      <label><input type="checkbox" id="useTrail" checked> Trailing stop 2×ATR dari +2R</label>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="run" disabled>Jalankan backtest</button>
+      <span class="hint" style="margin:0">Ketiga strategi dijalankan sekaligus.</span>
+    </div>
+  </div>
+
+  <div id="results" hidden>
+    <div class="card">
+      <h2>3. Hasil</h2>
+      <div class="subtabs" id="strategyTabs"></div>
+      <div class="tiles" id="tiles"></div>
+      <div class="note" id="verdict"></div>
+      <div class="note warn" id="caveats" hidden></div>
+      <div class="actions">
+        <button class="ghost" id="export">Unduh daftar trade (CSV)</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Kurva equity</h2>
+      <p class="hint">Garis putus-putus adalah modal awal.</p>
+      <svg class="chart" id="equityChart" role="img" aria-label="Kurva equity"></svg>
+      <h2 style="margin-top:14px">Drawdown</h2>
+      <svg class="chart" id="ddChart" style="height:140px" role="img" aria-label="Kurva drawdown"></svg>
+    </div>
+
+    <div class="card">
+      <h2>Bedah performa</h2>
+      <p class="hint">Kalau satu sesi atau satu alasan exit menyedot seluruh kerugian, di situlah aturannya perlu diperbaiki.</p>
+      <div class="twocol">
+        <div><h3 style="font-size:.85rem;color:var(--text-secondary);margin:0 0 2px">Per sesi</h3><div id="bySession"></div></div>
+        <div><h3 style="font-size:.85rem;color:var(--text-secondary);margin:0 0 2px">Per alasan exit</h3><div id="byExit"></div></div>
+      </div>
+      <h3 style="font-size:.85rem;color:var(--text-secondary);margin:14px 0 2px">Per bulan</h3>
+      <div id="byMonth"></div>
+    </div>
+
+    <div class="card">
+      <h2>Daftar trade</h2>
+      <div id="tradeTable"></div>
+      <div class="tablefoot" id="tradeFoot"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Urutan sebelum uang sungguhan</h2>
+    <p class="hint">Jangan lompati satu pun (TRADING_PLAN §8).</p>
+    <ol style="margin:0;padding-left:20px;color:var(--text-secondary);font-size:.9rem">
+      <li><strong>Backtest</strong> — profit factor ≥ 1,3 · max drawdown ≤ 15% · expectancy ≥ 0,15R · ≥ 100 trade</li>
+      <li><strong>Forward test demo</strong> — 30 trade, kepatuhan checklist ≥ 90%</li>
+      <li><strong>Live risiko 0,25%</strong> — 30 trade</li>
+      <li>Baru naik ke risiko penuh</li>
+    </ol>
+  </div>
+
+</section>
+
+<!-- ============================================================== RENCANA -->
+<section class="panel" id="panel-rencana" hidden>
+  <div class="toc" hidden></div>
+  <article class="doc"><p class="hint">Memuat trading plan…</p></article>
+</section>
+
+<!-- ================================================================== DATA -->
+<section class="panel" id="panel-data" hidden>
+  <div class="toc" hidden></div>
+  <article class="doc"><p class="hint">Memuat dokumen data…</p></article>
+</section>
+
+<footer>
+  <p>
+    Perangkat ini tidak menjamin profit. Ia hanya memastikan kamu tahu
+    <strong>kapan sebuah strategi tidak layak dipakai</strong> — dan itu justru bagian
+    yang paling menyelamatkan akun.
+  </p>
+  <p>
+    Hasil live akan sedikit lebih buruk dari backtest: slippage, spread mengambang, dan
+    requote tidak dimodelkan.
+  </p>
+  <p>
+    Angka di halaman ini identik dengan CLI Python di repo — dikunci oleh uji paritas
+    tiap trade. <a href="https://github.com/2013tib-droid/Xauusd" target="_blank" rel="noopener">Kode sumber</a>
+  </p>
+</footer>
+
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

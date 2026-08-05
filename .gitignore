@@ -12,3 +12,7 @@ data/*.tsv
 # Hasil backtest
 *.out.csv
 hasil*.csv
+
+# Situs hasil build (web/build.sh) — dibangkitkan ulang, bukan disimpan
+_site/
+node_modules/
