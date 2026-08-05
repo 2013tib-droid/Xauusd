@@ -30,9 +30,26 @@ makronya saja yang kosong. Jangan mengarang angka DXY atau yield. **Tidak pernah
 
 ### 2. Cari berita — judul saja
 
-Pakai WebSearch untuk:
+**Lihat `news/` dulu.** Kalau ada brief dari agen `gold-news` yang umurnya ≤ 7 hari,
+baca itu sebagai latar: tema penggerak minggu ini dan kalender yang sudah dikumpulkan
+di sana tidak perlu kamu cari ulang. Kalau brief-nya lebih tua dari 7 hari, anggap
+latarnya sudah basi dan jangan dipakai sebagai kerangka pencarian.
+
+Lalu pakai WebSearch untuk:
 - headline terkini soal gold / Fed / dollar / yield (cari yang beberapa jam terakhir)
 - event high-impact yang akan rilis hari ini dan besok (CPI, NFP, FOMC, pidato Fed)
+
+**Jangan panggil agen `gold-news` dari sini.** Dua hal ini beda tugas:
+
+| | `/brief` | agen `gold-news` |
+|---|---|---|
+| Kapan | tiap mau entry | mingguan, atau saat user memintanya |
+| Kedalaman | judul + kalender, hitungan menit | riset penuh: real yield, aliran ETF, bank sentral |
+| Hasil | `news.json` → halaman HTML | `news/YYYY-MM-DD-gold.md` |
+
+Briefing pra-entry yang menunggu riset makro selesai kehilangan gunanya — bar M15
+berikutnya tidak menunggu. Kalau user memang ingin riset mendalam, sarankan
+memanggil agennya terpisah, di luar `/brief`.
 
 Susun jadi `news.json`:
 

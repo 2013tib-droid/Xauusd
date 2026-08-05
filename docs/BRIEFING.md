@@ -92,6 +92,20 @@ Judul berita ditampilkan apa adanya. Alat ini tidak menyimpulkan bullish/bearish
 berita, dan itu disengaja: menerjemahkan headline jadi arah adalah bagian yang paling
 sering salah.
 
+### Hubungannya dengan `news/`
+
+`news.json` adalah masukan sekali pakai untuk satu briefing — judul dan kalender hari
+ini. Ia **bukan** hasil agen `gold-news`, dan tidak dibangkitkan darinya.
+
+Agen `gold-news` mengerjakan hal yang berbeda: riset mingguan yang mendalam (real yield,
+aliran ETF, pembelian bank sentral), hasilnya `news/YYYY-MM-DD-gold.md`. Brief itu berguna
+sebagai **latar** saat menyusun `news.json` — tema penggerak minggu ini dan kalender yang
+sudah terkumpul di sana tidak perlu dicari ulang.
+
+Pembagiannya sederhana: `news/` menjawab "apa yang sedang menggerakkan emas minggu ini",
+`news.json` menjawab "apa yang rilis dalam beberapa jam ke depan". Jangan menjalankan
+riset mingguan di tengah persiapan entry — bar M15 berikutnya tidak menunggu.
+
 ## Yang dijamin dan yang tidak
 
 Dijamin — dikunci oleh `tests/test_brief.py`:
