@@ -50,7 +50,11 @@ function showPanel(name) {
 const docCache = new Map();
 // Relatif terhadap halaman: build.sh menyalin docs/ ke sebelah index.html, jadi
 // jalur ini sama persis saat dilayani lokal maupun dari GitHub Pages.
-const DOC_SOURCES = { rencana: 'docs/TRADING_PLAN.md', data: 'docs/DATA.md' };
+const DOC_SOURCES = {
+  rencana: 'docs/TRADING_PLAN.md',
+  briefing: 'docs/BRIEFING.md',
+  data: 'docs/DATA.md',
+};
 
 async function loadDoc(name) {
   const target = $(`#panel-${name} .doc`);

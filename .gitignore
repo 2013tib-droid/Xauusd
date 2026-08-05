@@ -13,6 +13,11 @@ data/*.tsv
 *.out.csv
 hasil*.csv
 
+# Hasil briefing — dibuat ulang tiap kali, tidak perlu disimpan
+briefing*.html
+briefing*.json
+data/news.json
+
 # Situs hasil build (web/build.sh) — dibangkitkan ulang, bukan disimpan
 _site/
 node_modules/

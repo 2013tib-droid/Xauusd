@@ -113,6 +113,36 @@ def _round_lot(lot: float, step: float) -> float:
     return float(np.floor(lot / step + 1e-9) * step)
 
 
+def size_position(
+    equity: float,
+    risk_dist: float,
+    risk_pct: float = 1.0,
+    min_lot: float = 0.01,
+    lot_step: float = 0.01,
+    max_lot: float = 100.0,
+    undersized_policy: str = "skip",
+) -> tuple[float, float]:
+    """Kembalikan (lot, risiko_usd) untuk satu setup. Lot 0 = trade dilewati.
+
+    Dipakai bersama oleh backtester dan briefing, supaya angka lot yang kamu
+    lihat sebelum entry persis sama dengan yang dipakai saat menguji strategi.
+    """
+    if risk_dist <= 0:
+        return 0.0, 0.0
+
+    risk_usd = equity * risk_pct / 100.0
+    lot = _round_lot(risk_usd / (risk_dist * CONTRACT_SIZE), lot_step)
+
+    if lot < min_lot:
+        if undersized_policy == "min":
+            lot = min_lot
+        else:
+            return 0.0, 0.0
+
+    lot = min(lot, max_lot)
+    return lot, lot * risk_dist * CONTRACT_SIZE
+
+
 def _blackout_mask(index: pd.DatetimeIndex, windows) -> pd.Series:
     mask = pd.Series(False, index=index)
     for stamp, before, after in windows:
@@ -141,21 +171,15 @@ class Backtest:
     def _size(self, equity: float, risk_dist: float) -> tuple[float, float]:
         """Kembalikan (lot, risiko_usd). Lot 0 berarti trade harus dilewati."""
         cfg = self.cfg
-        risk_usd = equity * cfg.risk_pct / 100.0
-        if risk_dist <= 0:
-            return 0.0, 0.0
-
-        raw = risk_usd / (risk_dist * CONTRACT_SIZE)
-        lot = _round_lot(raw, cfg.lot_step)
-
-        if lot < cfg.min_lot:
-            if cfg.undersized_policy == "min":
-                lot = cfg.min_lot
-            else:
-                return 0.0, 0.0
-
-        lot = min(lot, cfg.max_lot)
-        return lot, lot * risk_dist * CONTRACT_SIZE
+        return size_position(
+            equity,
+            risk_dist,
+            risk_pct=cfg.risk_pct,
+            min_lot=cfg.min_lot,
+            lot_step=cfg.lot_step,
+            max_lot=cfg.max_lot,
+            undersized_policy=cfg.undersized_policy,
+        )
 
     # ------------------------------------------------------------------ exit
     def _close(self, pos: _Position, price: float, lot: float, reason: str) -> float:
